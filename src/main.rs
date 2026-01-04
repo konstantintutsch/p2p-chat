@@ -1,14 +1,16 @@
-use std::env;
-use std::io;
+use std::{io, env};
+use log::error;
 
 mod networking;
 use networking::server;
 use networking::client;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    env_logger::init();
 
+    let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
+        error!("Not enough arguments passed. Please choose: server, client");
         return;
     }
 
@@ -20,14 +22,16 @@ fn main() {
         while message != "exit" {
             message = String::new();
 
-            println!("Enter message: ");
+            println!("\nEnter message: ");
             let message_n = io::stdin().read_line(&mut message).unwrap();
+            println!("");
+
             // Remove trailing \n from input
             message.truncate(message_n - 1);
 
             client::send(&message);
         }
     } else {
-        println!("Unknown option {}", args[1]);
+        error!("Unknown option {}", args[1]);
     }
 }

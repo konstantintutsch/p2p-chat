@@ -1,18 +1,37 @@
 use std::net::{TcpListener, TcpStream};
 use std::io::Read;
+use log::{debug, info, error};
 
 fn handle_package(mut stream: TcpStream) {
     let mut buffer: String = Default::default();
-    stream.read_to_string(&mut buffer);
+    let read_result = stream.read_to_string(&mut buffer);
 
-    println!("Received: {}", buffer);
+    match read_result {
+        Ok(n_bytes) => {
+            debug!("Read {n_bytes} bytes from TCP stream");
+            info!("Received: {buffer}");
+        },
+        Err(error) => error!("Failed to read from stream: {error:?}")
+    };
 }
 
-pub fn listen() -> std::io::Result<()> {
-    let listener = TcpListener::bind("0.0.0.0:60042")?;
+pub fn listen() {
+    let bind_result = TcpListener::bind("0.0.0.0:60042");
+    let listener = match bind_result {
+        Ok(listener) => listener,
+        Err(error) => {
+            error!("Failed to bind listener: {error:?}");
+            return;
+        }
+    };
+    debug!("Listening on {}", listener.local_addr().unwrap());
 
-    for stream in listener.incoming() {
-        handle_package(stream?);
+    for incoming_result in listener.incoming() {
+        debug!("Incoming TCP stream");
+
+        match incoming_result {
+            Ok(stream) => handle_package(stream),
+            Err(error) => error!("Error receiving stream: {error:?}")
+        };
     }
-    Ok(())
 }
