@@ -2,10 +2,10 @@ use std::net::TcpStream;
 use std::io::Write;
 use log::{debug, error};
 
-pub fn send(message: &str) {
+pub fn send(target: &String, message: &str) {
     debug!("Sending message: {message}");
 
-    let connect_result = TcpStream::connect("127.0.0.1:60042");
+    let connect_result = TcpStream::connect(target);
     let mut stream = match connect_result {
         Ok(stream) => stream,
         Err(error) => {

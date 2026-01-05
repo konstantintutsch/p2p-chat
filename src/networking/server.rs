@@ -15,8 +15,8 @@ fn handle_package(mut stream: TcpStream) {
     };
 }
 
-pub fn listen() {
-    let bind_result = TcpListener::bind("0.0.0.0:60042");
+pub fn listen(host: String) {
+    let bind_result = TcpListener::bind(host);
     let listener = match bind_result {
         Ok(listener) => listener,
         Err(error) => {
