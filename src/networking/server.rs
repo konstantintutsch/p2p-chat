@@ -1,6 +1,6 @@
 use std::net::{TcpListener, TcpStream};
 use std::io::Read;
-use log::{debug, info, error};
+use log::{debug, error};
 
 fn handle_package(mut stream: TcpStream) {
     let mut buffer: String = Default::default();
@@ -9,7 +9,7 @@ fn handle_package(mut stream: TcpStream) {
     match read_result {
         Ok(n_bytes) => {
             debug!("Read {n_bytes} bytes from TCP stream");
-            info!("Received: {buffer}");
+            println!("Received: {buffer}");
         },
         Err(error) => error!("Failed to read from stream: {error:?}")
     };

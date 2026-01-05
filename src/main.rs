@@ -17,14 +17,11 @@ fn main() {
     if args[1] == "server" {
         server::listen();
     } else if args[1] == "client" {
-        let mut message = String::new();
+        loop {
+            let mut message = String::new();
 
-        while message != "exit" {
-            message = String::new();
-
-            println!("\nEnter message: ");
+            println!("Enter message: ");
             let message_n = io::stdin().read_line(&mut message).unwrap();
-            println!("");
 
             // Remove trailing \n from input
             message.truncate(message_n - 1);
@@ -32,6 +29,6 @@ fn main() {
             client::send(&message);
         }
     } else {
-        error!("Unknown option {}", args[1]);
+        error!("Unknown option: {}", args[1]);
     }
 }
