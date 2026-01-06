@@ -2,7 +2,9 @@ use std::net::TcpStream;
 use std::io::{Result, Write, stdin};
 use log::{debug, error};
 
-pub fn connect(target: String) {
+use crate::networking::protocol;
+
+pub fn connect(target: String, name: String) {
     let connect_result = TcpStream::connect(target);
     let stream = match connect_result {
         Ok(stream) => stream,
@@ -11,6 +13,12 @@ pub fn connect(target: String) {
             return;
         }
     };
+
+    let name_result = send(&stream, &protocol::encode_message(protocol::NAME, &name));
+    match name_result {
+        Ok(_) => debug!("Set name: {name}"),
+        Err(error) => error!("Failed to set name: {error:?}")
+    }
 
     loop {
         let mut message = String::new();

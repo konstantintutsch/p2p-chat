@@ -9,7 +9,9 @@ fn main() {
     env_logger::init();
 
     let mut host = String::new();
+
     let mut target = String::new();
+    let mut name = String::new();
 
     println!("Listen [host:port]:");
     let host_n = io::stdin().read_line(&mut host).unwrap();
@@ -27,5 +29,9 @@ fn main() {
     let target_n = io::stdin().read_line(&mut target).unwrap();
     target.truncate(target_n - 1); // Remove trailing \n from input
 
-    client::connect(target);
+    println!("Name:");
+    let name_n = io::stdin().read_line(&mut name).unwrap();
+    name.truncate(name_n - 1); // Remove trailing \n from input
+
+    client::connect(target, name);
 }
