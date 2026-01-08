@@ -2,7 +2,7 @@ use std::net::{TcpListener, TcpStream};
 use std::io::{Result, BufRead, BufReader};
 use log::{debug};
 
-use crate::networking::protocol;
+use crate::networking::{protocol, protocol::MessageType};
 
 fn handle_stream(stream: TcpStream) -> Result<()> {
     let mut name = String::from("Unknown");
@@ -13,7 +13,7 @@ fn handle_stream(stream: TcpStream) -> Result<()> {
         let message = line?;
 
         match protocol::get_message_type(&message) {
-            protocol::NAME => name = protocol::decode_message(protocol::NAME, &message),
+            MessageType::Name => name = protocol::decode_message(MessageType::Name, &message),
             _ => println!("{name}: {message}")
         }        
     }
