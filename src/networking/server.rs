@@ -12,13 +12,10 @@ fn handle_stream(stream: TcpStream) -> Result<()> {
         debug!("Incoming message");
         let message = line?;
 
-        match protocol::decode_message(protocol::NAME, &message) {
-            Some(new) => {
-                name = new.to_string();
-                debug!("Updated name: {new}");
-            },
-            None => println!("{name}: {message}")
-        }
+        match protocol::get_message_type(&message) {
+            protocol::NAME => name = protocol::decode_message(protocol::NAME, &message),
+            _ => println!("{name}: {message}")
+        }        
     }
 
     Ok(())
