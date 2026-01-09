@@ -1,3 +1,5 @@
+pub const PORT: u16 = 59744;
+
 const SEPERATOR: char = '+';
 
 #[derive(Copy, Clone)]

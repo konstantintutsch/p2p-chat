@@ -6,7 +6,7 @@ use log::{debug, error};
 use crate::networking::{protocol, protocol::MessageType};
 
 pub fn connect(target: String, name: String) {
-    let connect_result = TcpStream::connect(target);
+    let connect_result = TcpStream::connect((target, protocol::PORT));
     let stream = match connect_result {
         Ok(stream) => stream,
         Err(error) => {

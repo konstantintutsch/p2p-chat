@@ -22,8 +22,8 @@ fn handle_stream(stream: TcpStream) -> Result<()> {
     Ok(())
 }
 
-pub fn listen(host: String) -> Result<()> {
-    let listener = TcpListener::bind(host)?;
+pub fn listen() -> Result<()> {
+    let listener = TcpListener::bind(("0.0.0.0", protocol::PORT))?;
 
     let address_option = listener.local_addr();
     let address = match address_option {
