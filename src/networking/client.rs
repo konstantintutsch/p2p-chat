@@ -17,8 +17,8 @@ pub fn connect(target: String, name: String) {
 
     let name_result = send(&stream, &protocol::encode_message(MessageType::Name, &name));
     match name_result {
-        Ok(_) => debug!("Set name: {name}"),
-        Err(error) => error!("Failed to set name: {error:?}")
+        Ok(_) => debug!("Send name: {name}"),
+        Err(error) => error!("Failed to send name: {error:?}")
     }
 
     loop {
