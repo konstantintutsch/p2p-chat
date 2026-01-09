@@ -1,4 +1,10 @@
-pub const SEPERATOR: char = '+';
+const SEPERATOR: char = '+';
+
+#[derive(Copy, Clone, PartialEq)]
+enum Position {
+    Type = 0,
+    Seperator = 1
+}
 
 #[derive(PartialEq)]
 pub enum MessageType {
@@ -48,7 +54,7 @@ pub fn get_message_type(message: &String) -> MessageType {
         return MessageType::Text;
     }
 
-    let seperator_option = message.chars().nth(1);
+    let seperator_option = message.chars().nth(Position::Seperator as usize);
     let seperator_position = match seperator_option {
         Some(character) => character,
         None => ' '
@@ -58,7 +64,7 @@ pub fn get_message_type(message: &String) -> MessageType {
     }
 
 
-    let type_option = message.chars().nth(0);
+    let type_option = message.chars().nth(Position::Type as usize);
     let type_position = match type_option {
         Some(character) => character,
         None => ' '
