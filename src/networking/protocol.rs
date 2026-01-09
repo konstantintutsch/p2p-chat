@@ -1,6 +1,6 @@
 const SEPERATOR: char = '+';
 
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone)]
 enum Position {
     Type = 0,
     Seperator = 1
