@@ -1,5 +1,6 @@
 use std::net::{TcpListener, TcpStream};
 use std::io::{Result, BufRead, BufReader};
+use std::panic;
 use log::{debug};
 
 use crate::networking::{protocol, protocol::MessageType};
@@ -23,7 +24,13 @@ fn handle_stream(stream: TcpStream) -> Result<()> {
 
 pub fn listen(host: String) -> Result<()> {
     let listener = TcpListener::bind(host)?;
-    debug!("Listening on {}", listener.local_addr().unwrap());
+
+    let address_option = listener.local_addr();
+    let address = match address_option {
+        Ok(address) => address,
+        Err(error) => panic!("Failed to get listening address from listener: {error:?}")
+    };
+    debug!("Listening on {address}");
 
     for stream in listener.incoming() {
         debug!("Incoming TCP stream");

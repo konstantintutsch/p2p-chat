@@ -1,5 +1,6 @@
 use std::net::TcpStream;
 use std::io::{Result, Write, stdin};
+use std::panic;
 use log::{debug, error};
 
 use crate::networking::{protocol, protocol::MessageType};
@@ -23,7 +24,11 @@ pub fn connect(target: String, name: String) {
     loop {
         let mut message = String::new();
 
-        let message_n = stdin().read_line(&mut message).unwrap();
+        let message_result = stdin().read_line(&mut message);
+        let message_n = match message_result {
+            Ok(n) => n,
+            Err(error) => panic!("Failed to read message from stdin: {error:?}")
+        };
         message.truncate(message_n - 1); // Remove trailing \n from input
 
         let send_result = send(&stream, &message);

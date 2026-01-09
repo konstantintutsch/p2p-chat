@@ -48,12 +48,23 @@ pub fn get_message_type(message: &String) -> MessageType {
         return MessageType::Text;
     }
 
-    if message.chars().nth(1).unwrap() != SEPERATOR {
+    let seperator_option = message.chars().nth(1);
+    let seperator_position = match seperator_option {
+        Some(character) => character,
+        None => ' '
+    };
+    if seperator_position != SEPERATOR {
         return MessageType::Text;
     }
 
-    let type_option = MessageType::from_char(message.chars().nth(0).unwrap());
-    return match type_option {
+
+    let type_option = message.chars().nth(0);
+    let type_position = match type_option {
+        Some(character) => character,
+        None => ' '
+    };
+    let message_type_option = MessageType::from_char(type_position);
+    return match message_type_option {
         Some(message_type) => message_type,
         None => MessageType::Text
     }
